@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABOUT | 棘薔薇 -TOGEBARA-</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="about">
+
+<div id="page-transition"></div>
+<div id="nav-mount"></div>
+
+<section class="about-hero reveal">
+  <div class="section-eyebrow" style="justify-content:center;display:flex;">ABOUT</div>
+  <h1 id="artistName"></h1>
+  <p class="sub" id="artistTagline"></p>
+</section>
+
+<section class="section">
+  <div class="about-grid">
+    <div class="about-portrait reveal">
+      <img id="portraitImg" src="" alt="代表作品">
+    </div>
+    <div class="reveal">
+      <p class="about-bio" id="bioText"></p>
+      <div class="section-eyebrow" style="margin-top:36px;">LIKES</div>
+      <div class="tag-list" id="likesTags"></div>
+      <p class="about-note" id="noteText"></p>
+    </div>
+  </div>
+</section>
+
+<div class="quiet-quote reveal">
+  <p>この絵を見た誰かの心に、<br><span class="mark">忘れられない感情</span>が残りますように。</p>
+</div>
+
+<div id="footer-mount"></div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const data = PortfolioData.get();
+  const works = PortfolioData.getWorks();
+  document.getElementById("artistName").textContent = data.artistName;
+  document.getElementById("artistTagline").textContent = data.tagline;
+  document.getElementById("bioText").textContent = data.profile.bio;
+  document.getElementById("noteText").textContent = data.profile.note || "";
+  document.getElementById("likesTags").innerHTML =
+    data.profile.likes.map(l => `<span class="tag">${l}</span>`).join("");
+  if (works[0]) document.getElementById("portraitImg").src = PortfolioData.getWorkImage(works[0]);
+});
+</script>
+</body>
+</html>

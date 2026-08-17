@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理画面 | 棘薔薇 -TOGEBARA-</title>
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<div class="admin-shell">
+  <!-- ============ サイドバー ============ -->
+  <aside class="admin-sidebar">
+    <div class="admin-brand" id="sidebarTitle">管理画面<small>ADMIN</small></div>
+    <a href="index.html" class="admin-view-link" target="_blank">🔗 サイトを見る（新しいタブ）</a>
+    <nav class="admin-nav">
+      <button data-page="works" class="active"><span class="dot"></span>作品管理</button>
+      <button data-page="profile"><span class="dot"></span>プロフィール</button>
+      <button data-page="sns"><span class="dot"></span>SNS</button>
+      <button data-page="commission"><span class="dot"></span>依頼情報</button>
+      <button data-page="settings"><span class="dot"></span>サイト設定</button>
+    </nav>
+    <div class="admin-sidebar-foot">
+      変更はすべて自動で保存されます。<br>
+      このブラウザ内に保存されています。
+    </div>
+  </aside>
+
+  <!-- ============ メインエリア ============ -->
+  <main class="admin-main">
+
+    <!-- ---------- 作品管理 ---------- -->
+    <section class="admin-page active" id="page-works">
+      <div class="admin-header">
+        <div>
+          <h1>作品管理</h1>
+          <p>ギャラリーに表示される作品を追加・編集・削除できます。</p>
+        </div>
+        <button class="btn btn-accent" id="btnNewWork">＋ 作品を追加</button>
+      </div>
+
+      <div class="panel" id="worksListPanel">
+        <h2>登録済みの作品</h2>
+        <p class="hint">上下の矢印で表示順を変更できます。一番上がギャラリーの先頭に表示されます。</p>
+        <div id="worksList"></div>
+      </div>
+    </section>
+
+    <!-- ---------- 作品の追加・編集フォーム ---------- -->
+    <section class="admin-page" id="page-workForm">
+      <div class="admin-header">
+        <div>
+          <h1 id="workFormTitle">作品を追加</h1>
+          <p>画像を選んで、タイトルと説明を入れるだけで公開できます。</p>
+        </div>
+        <button class="btn btn-ghost" id="btnCancelWork">← 一覧に戻る</button>
+      </div>
+
+      <div class="step-flow">
+        <span id="step1">① 画像を選ぶ</span>
+        <span id="step2">② タイトルを入れる</span>
+        <span id="step3">③ 説明を入れる</span>
+        <span id="step4">④ 公開する</span>
+      </div>
+
+      <div class="panel">
+        <h2>① 画像</h2>
+        <p class="hint">クリックして画像を選んでください。まだ画像がない場合は、自動生成された仮画像がそのまま使われます。</p>
+        <div class="image-drop" id="imageDrop">
+          <img id="imagePreview" style="display:none;">
+          <div id="imageDropText">クリックして画像を選択</div>
+          <input type="file" accept="image/*" id="imageInput" style="display:none;">
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>② ③ 作品の情報</h2>
+        <div class="form-grid">
+          <div class="field full">
+            <label>タイトル</label>
+            <input type="text" id="fTitle" placeholder="例：棘のくちづけ">
+          </div>
+          <div class="field">
+            <label>制作年</label>
+            <input type="text" id="fYear" placeholder="例：2026">
+          </div>
+          <div class="field">
+            <label>カテゴリー</label>
+            <input type="text" id="fCategory" placeholder="例：オリジナル / キャラクター">
+          </div>
+          <div class="field">
+            <label>制作時期</label>
+            <input type="text" id="fPeriod" placeholder="例：2026年 春">
+          </div>
+          <div class="field full">
+            <label>説明</label>
+            <div class="desc">この作品にどんな気持ちを込めたか、自由に書いてください。</div>
+            <textarea id="fDescription" placeholder="この作品について..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>④ 公開設定</h2>
+        <div class="checkbox-field" style="margin-bottom:14px;">
+          <input type="checkbox" id="fPublished" checked>
+          <label for="fPublished">サイトに公開する（オフにすると下書きとして保存されます）</label>
+        </div>
+        <div class="checkbox-field">
+          <input type="checkbox" id="fFeatured">
+          <label for="fFeatured">TOPページの「今、見てほしい作品」に表示する</label>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-accent" id="btnSaveWork">公開する</button>
+        <button class="btn btn-ghost" id="btnCancelWork2">キャンセル</button>
+      </div>
+    </section>
+
+    <!-- ---------- プロフィール ---------- -->
+    <section class="admin-page" id="page-profile">
+      <div class="admin-header">
+        <div><h1>プロフィール</h1><p>ABOUTページに表示される内容です。</p></div>
+      </div>
+      <div class="panel">
+        <div class="field full">
+          <label>活動名</label>
+          <div class="desc">まだ決まっていない場合は仮の名前のままで大丈夫です。</div>
+          <input type="text" id="pArtistName">
+        </div>
+        <div class="field full">
+          <label>キャッチコピー（TOPページに表示）</label>
+          <input type="text" id="pTagline">
+        </div>
+        <div class="field full">
+          <label>自己紹介文</label>
+          <textarea id="pBio" style="min-height:120px;"></textarea>
+        </div>
+        <div class="field full">
+          <label>好きなもの（タグ）</label>
+          <div class="desc">Enterキーで追加できます。</div>
+          <input type="text" id="pLikeInput" placeholder="入力してEnter">
+          <div class="tag-editor" id="pLikesList"></div>
+        </div>
+        <div class="field full">
+          <label>ひとことメモ（任意）</label>
+          <input type="text" id="pNote">
+        </div>
+        <button class="btn btn-accent" id="btnSaveProfile">保存する</button>
+      </div>
+    </section>
+
+    <!-- ---------- SNS ---------- -->
+    <section class="admin-page" id="page-sns">
+      <div class="admin-header">
+        <div><h1>SNS</h1><p>ここにURLを入れると、サイト内に自動でリンクが表示されます。空欄のままなら「準備中」と表示されます。</p></div>
+      </div>
+      <div class="panel">
+        <div class="field full">
+          <label>Instagram のURL</label>
+          <input type="url" id="sInstagram" placeholder="https://instagram.com/...">
+        </div>
+        <div class="field full">
+          <label>X（旧Twitter）のURL</label>
+          <input type="url" id="sTwitter" placeholder="https://x.com/...">
+        </div>
+        <div class="field full">
+          <label>pixiv のURL</label>
+          <input type="url" id="sPixiv" placeholder="https://pixiv.net/...">
+        </div>
+        <button class="btn btn-accent" id="btnSaveSns">保存する</button>
+      </div>
+    </section>
+
+    <!-- ---------- 依頼情報 ---------- -->
+    <section class="admin-page" id="page-commission">
+      <div class="admin-header">
+        <div><h1>依頼情報</h1><p>COMMISSIONページの内容です。準備ができるまでは「準備中」のままで問題ありません。</p></div>
+      </div>
+      <div class="panel">
+        <div class="field full">
+          <label>受付状況</label>
+          <input type="text" id="cStatus" placeholder="例：準備中 / 受付中 / 一時停止中">
+        </div>
+        <div class="field full">
+          <label>案内文</label>
+          <textarea id="cNote"></textarea>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>依頼メニュー</h2>
+        <p class="hint">価格や納期は「準備中」のままでも、決まったら書き換えるだけで反映されます。</p>
+        <div id="commissionMenuList"></div>
+        <button class="btn btn-sm" id="btnAddMenuItem" style="margin-top:12px;">＋ メニューを追加</button>
+      </div>
+      <button class="btn btn-accent" id="btnSaveCommission">保存する</button>
+    </section>
+
+    <!-- ---------- サイト設定 ---------- -->
+    <section class="admin-page" id="page-settings">
+      <div class="admin-header">
+        <div><h1>サイト設定</h1><p>サイト全体のタイトルなどを変更できます。</p></div>
+      </div>
+      <div class="panel">
+        <div class="field full">
+          <label>サイトタイトル（左上に表示されます）</label>
+          <input type="text" id="stSiteTitle">
+        </div>
+        <div class="field full">
+          <label>TOPページのサブコピー</label>
+          <input type="text" id="stHeroSub">
+        </div>
+        <button class="btn btn-accent" id="btnSaveSettings">保存する</button>
+      </div>
+
+      <div class="notice-box">
+        現在このサイトは、あなたが今使っているブラウザの中にデータを保存しています。<br>
+        別のパソコンやスマホから編集内容を反映させたい場合の方法は、同封の <strong>README.md</strong>
+        の「本番運用について」に手順をまとめています。
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/data.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

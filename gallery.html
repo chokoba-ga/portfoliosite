@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GALLERY | 棘薔薇 -TOGEBARA-</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="gallery">
+
+<div id="page-transition"></div>
+<div id="nav-mount"></div>
+
+<section class="section" style="padding-top:120px;">
+  <div class="section-eyebrow reveal">GALLERY</div>
+  <h2 class="section-title reveal">作品一覧</h2>
+  <p class="section-lead reveal">表情に宿る、ほんの少しの毒と痛み。クリックすると、それぞれの作品の物語をご覧いただけます。</p>
+
+  <div class="gallery-filters reveal" id="filters"></div>
+  <div class="gallery-grid" id="galleryGrid"></div>
+</section>
+
+<div id="footer-mount"></div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const works = PortfolioData.getWorks();
+  const categories = ["すべて", ...new Set(works.map(w => w.category))];
+  const filters = document.getElementById("filters");
+  const grid = document.getElementById("galleryGrid");
+
+  filters.innerHTML = categories
+    .map((c, i) => `<button class="filter-chip ${i === 0 ? "active" : ""}" data-cat="${c}">${c}</button>`)
+    .join("");
+
+  function draw(cat) {
+    const list = cat === "すべて" ? works : works.filter(w => w.category === cat);
+    grid.innerHTML = list.length
+      ? list.map(renderWorkCard).join("")
+      : `<p style="font-family:var(--font-cute); color:var(--ash);">まだ作品がありません。管理画面から追加してください。</p>`;
+
+    grid.querySelectorAll(".work-card").forEach((el, i) => {
+      el.style.transitionDelay = (i % 8) * 0.05 + "s";
+    });
+    reobserveReveals();
+    initHoverTargets();
+  }
+
+  filters.addEventListener("click", (e) => {
+    const btn = e.target.closest(".filter-chip");
+    if (!btn) return;
+    filters.querySelectorAll(".filter-chip").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    draw(btn.dataset.cat);
+  });
+
+  draw("すべて");
+});
+</script>
+</body>
+</html>

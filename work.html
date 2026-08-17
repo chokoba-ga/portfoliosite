@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>作品詳細 | 棘薔薇 -TOGEBARA-</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="gallery">
+
+<div id="page-transition"></div>
+<div id="nav-mount"></div>
+
+<section class="section work-detail" id="detailMount">
+  <!-- JSで内容を差し込みます -->
+</section>
+
+<div id="footer-mount"></div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  const works = PortfolioData.getWorks();
+  const work = PortfolioData.getWorkById(id);
+  const mount = document.getElementById("detailMount");
+
+  if (!work) {
+    mount.innerHTML = `
+      <a href="gallery.html" class="back-link">← GALLERY に戻る</a>
+      <h1 style="font-family:var(--font-display);">作品が見つかりませんでした</h1>
+      <p style="color:var(--paper-dim);">削除されたか、URLが正しくない可能性があります。</p>
+    `;
+    return;
+  }
+
+  const idx = works.findIndex(w => w.id === work.id);
+  const prev = works[idx - 1];
+  const next = works[idx + 1];
+
+  mount.innerHTML = `
+    <a href="gallery.html" class="back-link">← GALLERY に戻る</a>
+    <div class="work-detail-figure">
+      <img src="${PortfolioData.getWorkImage(work)}" alt="${work.title}">
+    </div>
+    <h1>${work.title}</h1>
+    <div class="work-detail-meta">
+      <div><span>制作年</span><strong>${work.year}</strong></div>
+      <div><span>カテゴリー</span><strong>${work.category}</strong></div>
+      ${work.period ? `<div><span>制作時期</span><strong>${work.period}</strong></div>` : ""}
+    </div>
+    <p class="desc">${work.description || ""}</p>
+    <div class="work-nav">
+      ${prev ? `<a href="work.html?id=${prev.id}">← ${prev.title}</a>` : `<span></span>`}
+      ${next ? `<a href="work.html?id=${next.id}">${next.title} →</a>` : `<span></span>`}
+    </div>
+  `;
+
+  document.title = `${work.title} | 棘薔薇 -TOGEBARA-`;
+});
+</script>
+</body>
+</html>

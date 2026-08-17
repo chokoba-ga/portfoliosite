@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>棘薔薇 -TOGEBARA- | Illustration Portfolio</title>
+<meta name="description" content="キャラクターの表情を描くイラストレーター、棘薔薇のポートフォリオサイト。">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="top">
+
+<div id="page-transition"></div>
+<div id="nav-mount"></div>
+
+<!-- ============ HERO：最初に見せるのは「作品」 ============ -->
+<section class="hero">
+  <div class="hero-art">
+    <img id="heroImage" src="" alt="代表作品">
+  </div>
+  <div class="hero-frame"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">CHARACTER ILLUSTRATOR</div>
+    <h1 class="hero-title" id="heroTitle"></h1>
+    <p class="hero-tagline" id="heroTagline"></p>
+    <div class="hero-cta-row">
+      <a href="gallery.html" class="btn-primary">GALLERY へ進む</a>
+    </div>
+  </div>
+  <div class="scroll-hint"><span class="line"></span>SCROLL</div>
+</section>
+
+<!-- ============ 静けさの間（視線誘導） ============ -->
+<div class="quiet-quote reveal">
+  <p>「かわいい」の中に、<br>ほんの少しの<span class="mark">棘</span>を。</p>
+</div>
+
+<!-- ============ FEATURED WORKS ============ -->
+<section class="section">
+  <div class="section-eyebrow reveal">FEATURED WORKS</div>
+  <h2 class="section-title reveal">今、見てほしい作品</h2>
+  <div class="works-scroll-row" id="featuredRow"></div>
+  <div class="reveal" style="margin-top:20px;">
+    <a href="gallery.html" class="btn-primary">すべての作品を見る</a>
+  </div>
+</section>
+
+<!-- ============ ABOUT TEASER ============ -->
+<section class="section about-teaser">
+  <div class="frame-art reveal">
+    <img id="aboutTeaserImg" src="" alt="作者について">
+  </div>
+  <div class="reveal">
+    <div class="section-eyebrow">ABOUT</div>
+    <h2 class="section-title" id="artistNameHeading"></h2>
+    <p class="section-lead" id="aboutTeaserBio"></p>
+    <div class="tag-list" id="aboutTeaserTags"></div>
+    <div style="margin-top:26px;">
+      <a href="about.html" class="btn-primary">もっと知る</a>
+    </div>
+  </div>
+</section>
+
+<div id="footer-mount"></div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const data = PortfolioData.get();
+  const works = PortfolioData.getWorks();
+  const featured = PortfolioData.getFeaturedWorks();
+  const heroWork = featured[0] || works[0];
+
+  // ---- HERO ----
+  document.getElementById("heroImage").src = heroWork ? PortfolioData.getWorkImage(heroWork) : "";
+  document.getElementById("heroTitle").innerHTML =
+    data.artistName.split("").map(ch => `<span>${ch}</span>`).join("");
+  document.getElementById("heroTagline").textContent = data.tagline;
+
+  // ---- FEATURED ROW ----
+  const row = document.getElementById("featuredRow");
+  const featuredList = (featured.length ? featured : works).slice(0, 6);
+  row.innerHTML = featuredList.map(renderWorkCard).join("");
+
+  // ---- ABOUT TEASER ----
+  const teaserWork = works[1] || works[0];
+  if (teaserWork) document.getElementById("aboutTeaserImg").src = PortfolioData.getWorkImage(teaserWork);
+  document.getElementById("artistNameHeading").textContent = data.artistName;
+  document.getElementById("aboutTeaserBio").textContent = data.profile.bio;
+  document.getElementById("aboutTeaserTags").innerHTML =
+    data.profile.likes.slice(0, 4).map(l => `<span class="tag">${l}</span>`).join("");
+
+  // 追加された要素（作品カードなど）にもスクロール演出を適用しなおす
+  reobserveReveals();
+
+  // マウス位置に応じてヒーロー画像を少し動かす（世界に入っていく感覚）
+  const heroArtImg = document.getElementById("heroImage");
+  window.addEventListener("mousemove", (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 14;
+    const y = (e.clientY / window.innerHeight - 0.5) * 14;
+    heroArtImg.style.transform = `scale(1.1) translate(${x}px, ${y}px)`;
+  });
+});
+</script>
+</body>
+</html>

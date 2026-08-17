@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COMMISSION | 棘薔薇 -TOGEBARA-</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="commission">
+
+<div id="page-transition"></div>
+<div id="nav-mount"></div>
+
+<section class="commission-hero reveal">
+  <div class="status-badge" id="statusBadge"></div>
+  <h1 style="font-family:var(--font-display); font-size:clamp(2.2rem,6vw,3.6rem); margin:0;">COMMISSION</h1>
+  <p class="section-lead" style="margin:14px auto 0;" id="noteText"></p>
+</section>
+
+<section class="section">
+  <div class="commission-grid" id="menuGrid"></div>
+</section>
+
+<div id="footer-mount"></div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const data = PortfolioData.get();
+  document.getElementById("statusBadge").textContent = data.commission.status;
+  document.getElementById("noteText").textContent = data.commission.note;
+  document.getElementById("menuGrid").innerHTML = data.commission.menu.map(m => `
+    <div class="commission-card reveal">
+      <h3>${m.name}</h3>
+      <div class="price">${m.price}</div>
+      <p>${m.note || ""}</p>
+    </div>
+  `).join("");
+  reobserveReveals();
+});
+</script>
+</body>
+</html>
